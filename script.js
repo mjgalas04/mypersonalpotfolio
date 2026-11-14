@@ -52,15 +52,14 @@ if ("IntersectionObserver" in window) {
   sections.forEach((section) => navObserver.observe(section));
 }
 
-/* 3. Cursor spotlight on the hero */
+/* 3. Cursor / finger spotlight on the hero */
 const hero = document.querySelector(".hero");
 const heroWords = document.querySelectorAll(".hero__word");
 
 if (hero && !prefersReducedMotion) {
   let frame = null;
 
-  hero.addEventListener("pointermove", (e) => {
-    if (e.pointerType !== "mouse") return; // hover doesn't exist on touch
+  const moveLight = (e) => {
     if (frame) return; // one update per screen refresh is plenty
 
     frame = requestAnimationFrame(() => {
@@ -78,8 +77,10 @@ if (hero && !prefersReducedMotion) {
 
       hero.classList.add("is-lit");
     });
-  });
+  };
 
+  hero.addEventListener("pointermove", moveLight);
+  hero.addEventListener("pointerdown", moveLight);
   hero.addEventListener("pointerleave", () => {
     hero.classList.remove("is-lit");
   });
